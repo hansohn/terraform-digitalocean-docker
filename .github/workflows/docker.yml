@@ -29,7 +29,7 @@ jobs:
           sudo apt-get install --no-install-recommends -y jq python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils python3-pip
           python${PYTHON_VERSION} -m pip install --upgrade pip
           python${PYTHON_VERSION} -m pip install tfver
-          tfver=$(tfver -vMmL -t "hansohn/terraform:{tag}" | jq '.versions')
+          tfver=$(tfver -vMmL -t "hansohn/terraform-digitalocean:{tag}" | jq '.versions')
           echo ${tfver}
           echo tfver=${tfver} >> $GITHUB_OUTPUT
         env:
@@ -98,7 +98,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: hansohn/terraform
+          repository: hansohn/terraform-digitalocean
           short-description: ${{ github.event.repository.description }}
 
   slack:
