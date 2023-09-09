@@ -4,9 +4,9 @@ ARG ALPINE_VERSION=latest
 # builder
 FROM alpine:${ALPINE_VERSION} as builder
 ARG DOCTL_VERSION=latest
-ARG TERRAFORM_DOCS_VERSION=latest
 ARG TERRAFORM_VERSION=latest
 ARG TERRAGRUNT_VERSION=latest
+ARG TERRAFORM_DOCS_VERSION=latest
 ARG TFGET_VERSION=latest
 ARG TFLINT_VERSION=latest
 ARG TFSEC_VERSION=latest
@@ -75,10 +75,9 @@ RUN apk add --update --no-cache \
     ca-certificates \
     curl \
     jq \
-    unzip
+    unzip \
+    vim
 COPY --from=builder /root/.terraform.d/. /root/.terraform.d/
-COPY --from=builder /root/.tflint.d/. /root/.tflint.d/
-COPY --from=builder /root/.tflint.hcl /root/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 RUN /bin/bash -c 'terraform --version'
 
