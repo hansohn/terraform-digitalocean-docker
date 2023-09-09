@@ -72,6 +72,7 @@ RUN /bin/bash -c 'if [[ "${DOCTL_VERSION}" == "latest" ]]; then DOCTL_VERSION=$(
 FROM alpine:${ALPINE_VERSION} as main
 RUN apk add --update --no-cache \
     bash \
+    bash-completion \
     ca-certificates \
     curl \
     jq \
@@ -80,5 +81,8 @@ RUN apk add --update --no-cache \
 COPY --from=builder /root/.terraform.d/. /root/.terraform.d/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 RUN /bin/bash -c 'terraform --version'
+RUN echo $'\n\
+if [ -f /etc/profile.d/bash_completion.sh ]; then . /etc/profile.d/bash_completion.sh; fi\n\
+. <(doctl completion bash)' >> /root/.bashrc
 
 ENTRYPOINT []

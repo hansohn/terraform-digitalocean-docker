@@ -74,6 +74,7 @@ FROM ubuntu:${UBUNTU_VERSION} as main
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --no-install-recommends -y \
       bash \
+      bash-completion \
       curl \
       ca-certificates \
       git \
@@ -85,5 +86,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 COPY --from=builder /root/.terraform.d/. /root/.terraform.d/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 RUN /bin/bash -c 'terraform --version'
+RUN echo '\n\
+if [ -f /etc/profile.d/bash_completion.sh ]; then . /etc/profile.d/bash_completion.sh; fi\n\
+. <(doctl completion "${SHELL##*/}")' >> /root/.bashrc
 
 ENTRYPOINT []
