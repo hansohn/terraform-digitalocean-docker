@@ -17,16 +17,11 @@ REPO_NAME ?= $(shell basename $(CURDIR))
 #-------------------------------------------------------------------------------
 
 DOCKER_USER ?= hansohn
-DOCKER_REPO ?= terraform-digitalocean
+DOCKER_REPO ?= $(firstword $(subst -docker, , $(REPO_NAME)))
 DOCKER_TAG_BASE ?= $(DOCKER_USER)/$(DOCKER_REPO)
 
 DOCTL_VERSION ?= latest
-TERRAFORM_DOCS_VERSION ?= latest
 TERRAFORM_VERSION ?= latest
-TERRAGRUNT_VERSION ?= latest
-TFGET_VERSION ?= latest
-TFLINT_VERSION ?= latest
-TFSEC_VERSION ?= latest
 
 GIT_BRANCH ?= $(shell git branch --show-current 2>/dev/null || echo 'unknown')
 GIT_HASH := $(shell git rev-parse --short HEAD 2>/dev/null || echo 'pre')
@@ -38,15 +33,11 @@ DOCKER_TAGS += --tag $(DOCKER_TAG_BASE):latest
 DOCKER_TAGS += --tag $(DOCKER_TAG_BASE):$(TERRAFORM_VERSION)
 endif
 
-DOCKER_BUILD_PATH ?= debian
+DOCKER_BUILD_PATH ?= docker
 DOCKER_BUILD_ARGS ?=
 DOCKER_BUILD_ARGS += --build-arg DOCTL_VERSION=$(DOCTL_VERSION)
-DOCKER_BUILD_ARGS += --build-arg TERRAFORM_DOCS_VERSION=$(TERRAFORM_DOCS_VERSION)
 DOCKER_BUILD_ARGS += --build-arg TERRAFORM_VERSION=$(TERRAFORM_VERSION)
-DOCKER_BUILD_ARGS += --build-arg TERRAGRUNT_VERSION=$(TERRAGRUNT_VERSION)
-DOCKER_BUILD_ARGS += --build-arg TFGET_VERSION=$(TFGET_VERSION)
-DOCKER_BUILD_ARGS += --build-arg TFLINT_VERSION=$(TFLINT_VERSION)
-DOCKER_BUILD_ARGS += --build-arg TFSEC_VERSION=$(TFSEC_VERSION)
+DOCKER_BUILD_ARGS += --platform=linux/amd64,linux/arm64
 DOCKER_BUILD_ARGS += $(DOCKER_TAGS)
 
 DOCKER_RUN_ARGS ?=
@@ -56,6 +47,7 @@ DOCKER_RUN_ARGS += --rm
 
 DOCKER_PUSH_ARGS ?=
 DOCKER_PUSH_ARGS += --all-tags
+DOCKER_PUSH_ARGS += --platform=linux/amd64,linux/arm64
 
 ## Lint Dockerfile
 docker/lint:
@@ -71,7 +63,7 @@ docker/lint:
 docker/build:
 	-@if docker info > /dev/null 2>&1; then \
 		echo "[INFO] Building '$(DOCKER_USER)/$(DOCKER_REPO)' docker image."; \
-		docker build $(DOCKER_BUILD_ARGS) $(DOCKER_BUILD_PATH)/; \
+		docker buildx build $(DOCKER_BUILD_ARGS) $(DOCKER_BUILD_PATH)/; \
 	else \
 		echo "[ERROR] Docker 'build' failed. Docker daemon is not Running."; \
 	fi
