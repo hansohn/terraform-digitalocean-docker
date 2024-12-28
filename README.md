@@ -3,21 +3,17 @@
   <p>Terraform DigitalOcean Docker image</p>
   <p>
     <!-- Build Status -->
-    <a href="https://actions-badge.atrox.dev/hansohn/terraform-digitalocean-docker/goto?ref=main">
-      <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fhansohn%2Fterraform-digitalocean-docker%2Fbadge%3Fref%3Dmain&style=for-the-badge">
-    </a>
+    <a style="text-decoration:none;" class="imageLink" href="https://github.com/hansohn/terraform-aws-docker/actions/workflows/docker.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/hansohn/terraform-digitalocean-docker/docker.yml?style=for-the-badge"></a>
     <!-- Github Tag -->
-    <a href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/">
-      <img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
-    </a>
+    <a style="text-decoration:none;" class="imageLink" href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/">
+      <img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
     <!-- License -->
-    <a href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
-    </a>
+    <a style="text-decoration:none;" class="imageLink" href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE">
+      <img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
     <!-- LinkedIn -->
-    <a href="https://linkedin.com/in/ryanhansohn">
-      <img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555">
-    </a>
+    <a style="text-decoration:none;" class="imageLink" href="https://linkedin.com/in/ryanhansohn">
+      <img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
   </p>
 </div>
 
@@ -60,7 +56,7 @@ Published images can be run using the following syntax
 
 ```
 # run latest published version
-$ docker run -it --rm hansohn/terraform-digitalocean:latest /bin/bash
+docker run -it --rm hansohn/terraform-digitalocean:latest /bin/bash
 ```
 
 Local images can be built and run using the following syntax
@@ -110,16 +106,4 @@ $ TERRAFORM_VERSION=0.15.5 make docker/build
 
 # example with logs pipped to console
 $ DOCKER_BUILDKIT=0 TERRAFORM_VERSION=0.15.5 make docker/build
-```
-
-#### Distros
-
-Currently, only Debian images are built and published to Docker Hub. Dockerfiles
-for both Alpine and Ubuntu distributions have also been included and can be built
-ad-hoc by setting the `DOCKER_BUILD_PATH` environment variable to target either
-of these alternative distro builds.
-
-```
-# example
-$ DOCKER_BUILD_PATH=ubuntu make docker
 ```
