@@ -3,67 +3,126 @@
   <p>Terraform DigitalOcean Docker image</p>
   <p>
     <!-- Build Status -->
-    <a style="text-decoration:none;" class="imageLink" href="https://github.com/hansohn/terraform-aws-docker/actions/workflows/docker.yml">
-      <img src="https://img.shields.io/github/actions/workflow/status/hansohn/terraform-digitalocean-docker/docker.yml?style=for-the-badge"></a>
+    <a href="https://github.com/hansohn/terraform-digitalocean-docker/actions/workflows/docker.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/hansohn/terraform-digitalocean-docker/docker.yml?style=for-the-badge">
+    </a>
     <!-- Github Tag -->
-    <a style="text-decoration:none;" class="imageLink" href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/">
-      <img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
+    <a href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/">
+      <img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
+    </a>
+    <!-- Docker Pulls -->
+    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean">
+      <img src="https://img.shields.io/docker/pulls/hansohn/terraform-digitalocean.svg?style=for-the-badge">
+    </a>
+    <!-- Docker Image Size -->
+    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean">
+      <img src="https://img.shields.io/docker/image-size/hansohn/terraform-digitalocean/latest.svg?style=for-the-badge">
+    </a>
     <!-- License -->
-    <a style="text-decoration:none;" class="imageLink" href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
-    <!-- LinkedIn -->
-    <a style="text-decoration:none;" class="imageLink" href="https://linkedin.com/in/ryanhansohn">
-      <img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
+    <a href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE">
+      <img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
+    </a>
   </p>
 </div>
 
-### Description
+## Table of Contents
 
-Welcome to my Terraform DigitalOcean Docker repo. I've built this image with Terraform
-development and CI/CD in mind. The image contains various popular utilities often
-used in Terraform development. By default, this image targets the latest versions of
-these utilities and is built and published to Docker Hub every Monday, Wednesday,
-and Friday.
+- [Description](#description)
+- [What's Included](#whats-included)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Tags](#tags)
+- [Platform Support](#platform-support)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Customization](#customization)
+- [Build & Refresh Schedule](#build--refresh-schedule)
+- [Security](#security)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Whats Included
+## Description
 
-The following utilities are included in this image:
+Welcome to my Terraform DigitalOcean Docker repo. This image extends the
+[terraform](https://github.com/hansohn/terraform-docker) image with
+DigitalOcean-specific tooling, built with Terraform development and CI/CD in
+mind. It bundles the DigitalOcean CLI (`doctl`) on top of the base Terraform
+toolchain. Tool versions are pinned in the Dockerfile and kept current through
+dependency-update PRs; the image is rebuilt and published to Docker Hub weekly
+(Mondays) to pick up base-image security patches.
+
+## What's Included
+
+This image builds on [hansohn/terraform](https://hub.docker.com/r/hansohn/terraform),
+which provides:
 
 - [terraform](https://github.com/hashicorp/terraform): Software tool that enables you to safely and predictably create, change, and improve infrastructure
 - [terragrunt](https://github.com/gruntwork-io/terragrunt): A thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs): Generate documentation from Terraform modules in various output formats
-- [tfint](https://github.com/terraform-linters/tflint): A Pluggable Terraform Linter
-- [tfsec](https://github.com/aquasecurity/tfsec): Security scanner for your Terraform code
-- [doctl](https://docs.digitalocean.com/reference/doctl/): DigitalOcean command line interface (CLI)
+- [tflint](https://github.com/terraform-linters/tflint): A Pluggable Terraform Linter
+- [trivy](https://github.com/aquasecurity/trivy): Security scanner for your Terraform code
 
-### Tags
+On top of that base, this image adds:
 
-Docker images are tagged based on the version of Terraform they include. Tag
-format adheres to the following naming convention provided by the [tfver](https://github.com/hansohn/tfver)
-utility.
+- [doctl](https://docs.digitalocean.com/reference/doctl/): The official DigitalOcean command line interface (CLI), with bash completion pre-configured
+
+## Prerequisites
+
+- Docker 20.10 or later
+- Docker Buildx with BuildKit (required for multi-platform builds and the
+  build cache mounts the Dockerfile relies on)
+
+## Quick Start
+
+```bash
+# Pull and run the latest version
+docker pull hansohn/terraform-digitalocean:latest
+docker run -it --rm hansohn/terraform-digitalocean:latest terraform version
+
+# Run with your Terraform code mounted
+docker run -it --rm -v $(pwd):/workspace -w /workspace hansohn/terraform-digitalocean:latest terraform plan
+```
+
+## Tags
+
+Docker images are tagged based on the pinned version of Terraform they include
+(inherited from the base image). A single Terraform version is published at a
+time, and it receives the full set of tags below:
 
 ```
-# tag formats
-hansohn/terraform:latest        latest release of Terraform
-hansohn/terraform:1             latest 1.x.x version release of Terraform
-hansohn/terraform:1.2           latest 1.2.x version release of Terraform
-hansohn/terraform:1.2.3         1.2.3 version of Terraform
+# tag formats (for a pinned Terraform version of e.g. 1.15.7)
+hansohn/terraform-digitalocean:latest        the currently published release
+hansohn/terraform-digitalocean:1             the 1.x.x line
+hansohn/terraform-digitalocean:1.15          the 1.15.x line
+hansohn/terraform-digitalocean:1.15.7        the exact version
 ```
 
-### Usage
+For reproducibility, pin by digest (`hansohn/terraform-digitalocean@sha256:...`);
+every image ships provenance attestations and an SBOM bound to that digest.
 
-Published images can be run using the following syntax
+## Platform Support
 
-```
+This image supports multiple platforms:
+
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/Apple Silicon)
+
+Docker will automatically pull the correct architecture for your system.
+
+## Usage
+
+Published images can be run using the following syntax:
+
+```bash
 # run latest published version
 docker run -it --rm hansohn/terraform-digitalocean:latest /bin/bash
 ```
 
-Local images can be built and run using the following syntax
+Local images can be built and run using the following syntax:
 
-```
+```bash
 # build and run local image
-make docker
+make
 ```
 
 Additionally, a Makefile has been included in this repo to assist with common
@@ -74,9 +133,10 @@ convenience:
 Available targets:
 
   clean                               Clean everything
-  clean/docker                        Clean docker build images
-  docker                              Docker lint, build and run image
+  dev                                 Initialize development environment
   docker/build                        Docker build image
+  docker/check                        Check if Docker daemon is running
+  docker/clean                        Docker clean build images
   docker/lint                         Lint Dockerfile
   docker/push                         Docker push image
   docker/run                          Docker run image
@@ -85,25 +145,80 @@ Available targets:
   help/short                          This help short screen
 ```
 
-### Customization
+## Examples
 
-#### Utilities
-
-I publish images with the latest versions of the included utilities. Alternatively,
-you can build a customized image and pin any of these utilities to a version that
-matches your specific needs. Versions can be pinned by defining any of the following
-environment variables with the desired version.
-
-- TERRAFORM_VERSION
-- TERRAGRUNT_VERSION
-- TERRAFORM_DOCS_VERSION
-- TFLINT_VERSION
-- TFSEC_VERSION
+### Initialize Terraform
 
 ```bash
-# example
-$ TERRAFORM_VERSION=0.15.5 make docker/build
-
-# example with logs pipped to console
-$ DOCKER_BUILDKIT=0 TERRAFORM_VERSION=0.15.5 make docker/build
+docker run -it --rm -v $(pwd):/workspace -w /workspace \
+  hansohn/terraform-digitalocean:latest terraform init
 ```
+
+### Run the DigitalOcean CLI
+
+```bash
+docker run -it --rm -e DIGITALOCEAN_ACCESS_TOKEN \
+  hansohn/terraform-digitalocean:latest doctl account get
+```
+
+### Generate Documentation
+
+```bash
+docker run -it --rm -v $(pwd):/docs -w /docs \
+  hansohn/terraform-digitalocean:latest terraform-docs markdown . > README.md
+```
+
+### Run Security Scan
+
+```bash
+docker run -it --rm -v $(pwd):/src -w /src \
+  hansohn/terraform-digitalocean:latest trivy config .
+```
+
+## Customization
+
+### Utilities
+
+Utility versions are pinned in the [Dockerfile](Dockerfile) and kept current
+through automated dependency-update PRs. For a local build you can override any
+of them on the command line to target a specific version:
+
+- TERRAFORM_VERSION (selects the base `hansohn/terraform` image tag)
+- DOCTL_VERSION
+
+```bash
+# build against a specific doctl version
+DOCTL_VERSION=1.163.0 make docker/build
+```
+
+> **Note:** Builds require BuildKit (the default in modern Docker). The Dockerfile
+> uses BuildKit cache mounts, so `DOCKER_BUILDKIT=0` is not supported.
+
+## Build & Refresh Schedule
+
+Images are automatically:
+
+- **Built and linted** on every push (multi-platform, without publishing)
+- **Published** when a version tag is pushed
+- **Refreshed** every Monday at 7am UTC to pick up the latest base-image security patches
+
+This ensures published images stay up-to-date with the latest base image security updates.
+
+## Security
+
+- Images include provenance attestations and SBOM (Software Bill of Materials)
+- The `doctl` release archive is checksum-verified at build time
+- Published images are scanned for vulnerabilities with Trivy
+- Security vulnerabilities? See our [Security Policy](.github/SECURITY.md)
+
+## Contributing
+
+Contributions are welcome! Please see our [Contributing Guide](.github/CONTRIBUTING.md) for details.
+
+- Report bugs via [Issues](https://github.com/hansohn/terraform-digitalocean-docker/issues)
+- Request features via [Feature Requests](https://github.com/hansohn/terraform-digitalocean-docker/issues/new?template=feature-request.yml)
+- Submit PRs following our [PR Template](.github/PULL_REQUEST_TEMPLATE.md)
+
+## License
+
+This project is licensed under the terms specified in [LICENSE](LICENSE).
