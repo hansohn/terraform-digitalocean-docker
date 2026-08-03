@@ -6,7 +6,7 @@ ARG TERRAFORM_VERSION=1.15.7
 FROM hansohn/terraform:${TERRAFORM_VERSION} AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 # renovate: datasource=github-releases depName=digitalocean/doctl extractVersion=^v(?<version>.+)$
-ARG DOCTL_VERSION=1.164.0
+ARG DOCTL_VERSION=1.166.0
 ENV CURL='curl -fsSL'
 ENV CACHE_DIR='/var/cache/github-api'
 COPY scripts/resolve-version.sh /opt/build/resolve-version
