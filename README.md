@@ -1,27 +1,17 @@
 <div align="center">
-  <h3>terraform-digitalocean-docker</h3>
+  <h1>terraform-digitalocean-docker</h1>
   <p>Terraform DigitalOcean Docker image</p>
   <p>
     <!-- Build Status -->
-    <a href="https://github.com/hansohn/terraform-digitalocean-docker/actions/workflows/docker.yml">
-      <img src="https://img.shields.io/github/actions/workflow/status/hansohn/terraform-digitalocean-docker/docker.yml?style=for-the-badge">
-    </a>
+    <a href="https://github.com/hansohn/terraform-digitalocean-docker/actions/workflows/docker.yml"><img src="https://img.shields.io/github/actions/workflow/status/hansohn/terraform-digitalocean-docker/docker.yml?style=for-the-badge"></a>
     <!-- Github Tag -->
-    <a href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/">
-      <img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
-    </a>
+    <a href="https://gitHub.com/hansohn/terraform-digitalocean-docker/tags/"><img src="https://img.shields.io/github/tag/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
     <!-- Docker Pulls -->
-    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean">
-      <img src="https://img.shields.io/docker/pulls/hansohn/terraform-digitalocean.svg?style=for-the-badge">
-    </a>
+    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean"><img src="https://img.shields.io/docker/pulls/hansohn/terraform-digitalocean.svg?style=for-the-badge"></a>
     <!-- Docker Image Size -->
-    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean">
-      <img src="https://img.shields.io/docker/image-size/hansohn/terraform-digitalocean/latest.svg?style=for-the-badge">
-    </a>
+    <a href="https://hub.docker.com/r/hansohn/terraform-digitalocean"><img src="https://img.shields.io/docker/image-size/hansohn/terraform-digitalocean/latest.svg?style=for-the-badge"></a>
     <!-- License -->
-    <a href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge">
-    </a>
+    <a href="https://github.com/hansohn/terraform-digitalocean-docker/blob/main/LICENSE"><img src="https://img.shields.io/github/license/hansohn/terraform-digitalocean-docker.svg?style=for-the-badge"></a>
   </p>
 </div>
 
